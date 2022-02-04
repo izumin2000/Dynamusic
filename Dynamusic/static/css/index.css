@@ -1,0 +1,116 @@
+body{
+    overflow: hidden;
+}
+
+.contents-table {
+    padding-top: 70px;
+}
+
+#table-wrapper {
+    margin: 80px 30px 0 30px;
+    height: calc(95vh - 120px);
+    width: calc(100% - 60px);
+    overflow-x: hidden;
+    overflow-y: hidden;
+    display: none;
+}
+
+@media screen and (max-width: 800px) {
+    #table-wrapper {
+        margin-top: 90px;
+        overflow-x:visible;
+        height: calc(95vh - 135px);
+    }
+}
+
+#table-wrapper th {
+    padding: auto;
+}
+
+#tableLoad {
+    position: absolute;
+	top: 50vh;
+	left: 40%;
+    font-size: 30px;
+    color: #0f8eae;
+}
+
+#tableLoad img {
+    height: 40px;
+}
+
+#player {
+    position: fixed; 
+    bottom: 0;
+    right: 0;
+    margin-right: 5px;
+    display: none;
+}
+
+#player button {
+    font-size: 16px;
+    height: 40px;
+    width: 40px;
+	margin: 0 5px 7.5px 0;
+	border:2px solid;
+	line-height:35px;
+	border-radius:50%;
+	text-align:center;
+	display:inline-block;
+    cursor: pointer;
+}
+
+#autoscrollButton {
+    color: #0f8eae;
+}
+
+#slider {
+    position: fixed; 
+    bottom: 15px;
+    left: 90px;
+    width: calc(95% - 250px);
+}
+
+@media screen and (max-width: 535px) {
+    #slider {
+        left: 40px;
+        width: calc(95% - 200px);
+    }
+}
+
+#sliderlabel {
+    position: fixed;
+    bottom: 12px;
+    right: calc(100% - 84px);
+}
+
+@media screen and (max-width: 535px) {
+    #sliderlabel {
+        right: calc(100% - 34px);
+    }
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width:100%;
+    height: 60px;
+    background-color:#0f8eae80;
+}
+
+#toast-container{
+    bottom: 65px;
+}
+
+#hello {
+    margin-bottom: 0px;
+}
+
+#hellolink {
+    margin-right: 3px;
+    color: #70e2ff;
+    text-decoration-line: underline;
+    font-weight: bold;
+    text-underline-offset:0.2em;
+}

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load addstr %}
+
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">    
+    <link rel="stylesheet" href="{% static 'css/tooltips.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="icon" href="{% static 'img/dynamusic_icon.ico' %}">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" /> <!-- toastrに必要なファイルの読み込み -->
+
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
+
+    <script type ="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script type ="text/javascript" src="{% static 'js/jquery.mousewheel.js' %}"></script>
+
+    <!-- <script type ="text/javascript" src="{% static 'js/music.js' %}"></script> -->
+    <script type ="text/javascript" src="{% static 'js/updown.js' %}"></script>
+    <script type ="text/javascript" src="{% static 'js/colorchange.js' %}"></script>
+    <script type="text/javascript" src="https://www.midijs.net/lib/midi.js"></script>
+
+    <!-- インフォメーションポップアップに必要なjsの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script>$('[data-toggle="tooltip"]').tooltip()</script>
+    <script>$('[data-toggle="popover"]').popover()</script>
+    <title>Dynamusic</title>
+</head>
+
+<body>
+    <header class="DownMove">
+        <div id="headerLeft">
+            <a href="{% url 'index' %}"><img src="{% static 'img\dynamusic_motionlogo.gif' %}" id="logo"></a>
+            {% if user.is_authenticated %}
+                <div class="authButtons">
+                    <button id="logoutButton" type="button"><a class="headeritem" href="{% url 'logout' %}">ログアウト</a></button>
+                </div>
+                <p id="hederUsername">{{ user.get_username }}でログイン中</p>
+            {% else %}
+                <div class="authButtons">
+                    <button id="loginButton" type="button"><a class="headeritem" href="{% url 'login' %}">ログイン</a></button>
+                    <button id="accountcreateButton" type="button"><a class="headeritem" href="{% url 'create' %}">新規登録</a></button>
+                </div>
+            {% endif %}
+        </div>
+        <ul id="links">
+            <li><a class="headeritem" href="{% url 'index' %}">ホーム</a></li>
+            <li><a class="headeritem" href="{% url 'chat' %}">チャット</a></li>
+            <li><a class="headeritem" href="{% url 'doc' %}">使い方</a></li>
+            <li><a class="headeritem" href="{% url 'midis' %}">MIDI<i class="fas fa-download"></i></a></li>
+        </ul>
+    </header>
+
+    <div id="tableLoad">
+        <img src="{% static 'img/loading.gif' %}" alt="">
+        <p>Loading...</p>
+    </div>
+    <div id="table-wrapper">
+        <table id="musicTable">
+            <section id="up-section">
+                <tr id = "0">
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="ビート" ><i class="fas fa-list-ol"></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="ここから再生"><i class="fas fa-play-circle"></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="編集"><i class="fas fa-pen"></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="コメント"><i class="fas fa-comment-dots"></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="速さ"><i class="fas fa-tachometer-alt"></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック1" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">1</p></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック2" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">2</p></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック3" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">3</p></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック4" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">4</p></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック5" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">5</p></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック6" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">6</p></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック7" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">7</p></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック8" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">8</p></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック9" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">9</p></i></th>
+                </tr>
+                {% for sound in sounds %}
+                <tr id = "{{ sound.beats }}">
+                    <td id="td-beats">{{ sound.beats }}</td>
+                    <td id="td-play" data-bs-toggle="tooltip" data-bs-placement="top" title="ここから再生"><a href="{% url 'autoplay' sound.beats %}"><i class="fas fa-play-circle"></i></a></td>
+                    <td id="td-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="編集"><a href="{% url 'edit' sound.beats %}"><i class="fas fa-pen"></i></a></td>
+                    {% if sound.comment  %}
+                    <td id="td-comment-linked" data-bs-toggle="tooltip" data-bs-placement="top" title="ビート{{ sound.beats }}について話しているチャットを表示"><a href="{% url 'chatbeats' sound.beats %}"><i class="fas fa-comment-dots"></i></a></td>
+                    {% else %}
+                    <td id="td-comment" data-bs-toggle="tooltip" data-bs-placement="top" title="ビート{{ sound.beats }}について話しているチャットはありません"><i class="fas fa-comment-dots"></i></td>
+                    {% endif %}
+                    <td id="td-speed">{{ sound.speed }}<br /><p id="td-length"><i class="fas fa-times"></i>{{ sound.length }}</p> </td>
+                    <td class="td-track" onmouseenter="onmouseplay('{{ sound.track1 }}')">{{ sound.track1 }}</td>
+                    <td class="td-track" onmouseenter="onmouseplay('{{ sound.track2 }}')">{{ sound.track2 }}</td>
+                    <td class="td-track" onmouseenter="onmouseplay('{{ sound.track3 }}')">{{ sound.track3 }}</td>
+                    <td class="td-track" onmouseenter="onmouseplay('{{ sound.track4 }}')">{{ sound.track4 }}</td>
+                    <td class="td-track" onmouseenter="onmouseplay('{{ sound.track5 }}')">{{ sound.track5 }}</td>
+                    <td class="td-track" onmouseenter="onmouseplay('{{ sound.track6 }}')">{{ sound.track6 }}</td>
+                    <td class="td-track" onmouseenter="onmouseplay('{{ sound.track7 }}')">{{ sound.track7 }}</td>
+                    <td class="td-track" onmouseenter="onmouseplay('{{ sound.track8 }}')">{{ sound.track8 }}</td>
+                    <td class="td-track" onmouseenter="onmouseplay('{{ sound.track9 }}')">{{ sound.track9 }}</td>
+                </tr>
+                {% endfor %}
+            </section>
+        </table>
+    </div>
+
+    <footer>
+        <div id="player">
+            <button data-bs-toggle="tooltip4" data-bs-placement="left" title="クリックして自動スクロールをオフ" id="autoscrollButton" onclick="musicautoscroll()"><i class="fas fa-angle-double-down"></i></button>
+            <button data-bs-toggle="tooltip4" data-bs-placement="left" title="クリックして再生" id="playpauseButton" onclick="musicplaypause()"><i class="fas fa-play"></i></button>
+            <button data-bs-toggle="tooltip4" data-bs-placement="left" title="クリックして停止" id="stopButton" onclick="musicstop()"><i class="fas fa-stop"></i></button>
+        </div>
+
+        <div id="jamper" data-bs-toggle="tooltip4" data-bs-placement="left" title="再生バー" >
+            <label id="sliderlabel">ID:1</label>
+            <input type="range" id="slider" min="1" max="1024" step="1" value="1" onmouseup="target()" onclick="target()" />
+        </div>
+    </footer>
+    <!-- jsに値を渡す為の要素 -->
+    <p id="isAutoplayDummy" hidden></p>  
+        <!-- mousewheel -->
+    <script type="text/javascript">
+        $(function() {
+            //コンテンツの横サイズ
+            // var cont = $('#musicTable')、var contW = $('#musicTable').outerWidth(true) * $('div',cont ).length で レイアウト設定
+
+            var cont = $('#musicTable');
+            var contW = $('#musicTable').outerWidth(true) * $('div',cont ).length;
+            cont.css('width', contW);
+            //スクロールスピード
+            var speed = 30;
+            //マウスホイールで横移動
+            // $('#musicTable').mousewheel(function(event, mov) の #musicTableでどのタグの範囲まで、マウスホイール操作に関数を実行(有効化)させるか指定
+            $('#musicTable').mousewheel(function(event, mov) {
+                //ie firefox
+                $(this).scrollLeft($(this).scrollLeft() - mov * speed);
+                //webkit  $('#table-wrapper').scrollLeft($('#table-wrapper').scrollLeft() - mov * speed)の#table-wrapperによりスクロールさせる場所を移動する
+                $('#table-wrapper').scrollLeft($('#table-wrapper').scrollLeft() - mov * speed);
+                return false;   //縦スクロール不可
+            });
+        });
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+</body>
+
+<script>
+    // オンマウス再生されない際のポップアップの表示
+    var isFirstOnmousePlayWarning = true;
+    window.onerror = (message, file, lineNo, colNo, error) => {
+        if (message == "Script error.") {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "timeOut": "5000",
+                "extendedTimeOut": "5000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+            }
+            if (isFirstOnmousePlayWarning) {
+                toastr.warning("オンマウス再生されない場合は画面の適当な場所をクリックしてください")
+                isFirstOnmousePlayWarning = false;
+            }
+        }
+    }
+</script>
+
+<script>
+    // インフォメーションポップアップの実装
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+    
+    // toastrの実装
+    window.addEventListener('load',function(){
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "timeOut": "10000",
+            "extendedTimeOut": "0",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+        }
+        
+        if ("{{ isFirst }}" == "True"){     // 初めてのログインなら
+            toastr.info("<p id='hello'>Dynamusicへようこそ！\n初めての方は<a id='hellolink'  href='{% url 'doc' %}'>使い方</a>を参考にしてください！</p>")      // ハローメッセージの表示
+        }
+        
+        "{% for changelog in changelogs %}"
+        toastr.success("{{ changelog }}");
+        "{% endfor %}"
+        "{% for infomationlog in infomationlogs %}"
+        "{% if infomationlog == 'hello' %}"     // helloメッセージなら
+        
+        "{% else %}"        // それ以外のメッセージなら
+        toastr.info("{{ infomationlog }}");
+        "{% endif %}"
+        "{% endfor %}"
+        
+        "{% for problemlog in problemlogs %}"
+        toastr.warning("{{ problemlog }}");
+        "{% endfor %}"
+
+        // 編集したトラックをマーク
+        var musicTableId = document.getElementById('musicTable');
+        for (i = Number('{{ autoscroll }}'); i <= Number('{{ editedbeatsEnd }}'); i++) {
+            if (i != 0) {
+                var cellId = musicTableId.rows[i].cells[Number('{{ editedtrack }}') + 4];
+                cellId.style.backgroundColor = '#FFC9D2';
+            }
+        }
+    });
+</script>
+
+<script>
+    window.addEventListener('load',function(){
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "timeOut": "1000000",
+            "extendedTimeOut": "1000000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+        }
+        
+        if ("{{ isFirst }}" == "True"){     // 初めてのログインなら
+            toastr.warning("このサイトはcookieを使用しています。\nクリックして閉じる")
+        }
+    });
+</script>
+
+<script>
+    window.addEventListener('load',function(){
+        "{% if autoscroll %}"
+        window.location.href = "\#" + String(Number("{{ autoscroll }}") - 1);
+        "{% endif %}"
+        
+        // 途中再生時の自動再生の設定
+        "{% if autoplay != '' %}"
+        var isAutoplayDummyId = document.getElementById('isAutoplayDummy');
+        isAutoplayDummy.innerText = "{{ autoplay }}";
+        "{% endif %}"
+    });
+</script>
+
+<script type ="text/javascript" src="{% static 'js/music.js' %}"></script>
+</html>

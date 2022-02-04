@@ -1,0 +1,55 @@
+#textPassword {
+    border: none;       /* デフォルトの枠線を消す */
+}
+
+#fieldPassword {
+    border-width: thin;
+    border-style: solid;
+    width: 200px;
+}
+
+div.reg{
+    background-color: #EEEEEE;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 10%;
+    padding: 40px;
+}
+  
+table.reg_form{
+    width: 100%;
+    border-spacing: 10px 30px;
+    padding-left:20px;
+}
+  
+.btn{
+    color: rgb(0, 0, 0);
+    background-color: #000033;
+    font-size: 1.0em;
+    padding: 10px 30px;
+    margin-left: 80%;
+    margin: 30px;
+    display: inline-block;
+    transition: 0.5s;
+}
+  
+.btn:hover{
+    color: #fff;
+    background: #0f8eae;
+    display: inline-block;
+    transition: 0.5s;
+}
+
+/* 入力項目が正しいかの判断、カーソルを載せている時の表示色 */
+  input:required{
+        background: #ffcdd2;
+    }
+    input[type="email"]:invalid{
+        background: #ffcdd2;
+    }
+    input:valid{
+        background: transparent;
+    }
+    input:focus{
+        background: #DCEDC8;
+    }

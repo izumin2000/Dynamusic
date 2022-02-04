@@ -1,0 +1,11 @@
+pip == 21.3.1
+asgiref == 3.4.1
+Django == 3.2.9
+mido == 1.2.10
+numpy == 1.21.4
+pretty-midi == 0.2.9
+pychord == 1.0.0
+pytz == 2021.3
+setuptools == 57.4.0
+six == 1.16.0
+sqlparse == 0.4.2

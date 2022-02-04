@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/create_confirm.css' %}"/>
+
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <style>
+    </style>
+    <title>Dynamusic - 確認画面</title>
+</head>
+<body>
+    <h1 class="myh1">確認画面</h1>
+    <div class="myHr"></div>
+    <div class="reg">
+        <table  class="ui celled table table table-hover" >
+            <tr><td>名前: </td><td>{{form.cleaned_data.username}}</td></tr>
+            <tr><td>メールアドレス: </td><td>{{form.cleaned_data.email}}</td></tr>
+            <tr><td>パスワード: </td><td><input type="password" id="textPassword" value="{{form.cleaned_data.password1}}" readonly="readonly">
+                <span id="buttonEye" class="fa fa-eye" onclick="pushHideButton()"></span></td></tr>   
+        </table>
+        <form class="ui form" action="" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            {{field.as_hidden}}
+            {% endfor %}
+            <table  class="ui celled table table table-hover" >
+                <tr><td><input class="btn" name="next" value="戻る" type="submit"></td>
+                    <td><input class="btn" name="next" value="作成" type="submit"></td></tr>
+            </table>
+        </form>
+    </div>
+
+    <script language="javascript">
+        function pushHideButton() {
+          var txtPass = document.getElementById("textPassword");
+          var btnEye = document.getElementById("buttonEye");
+          if (txtPass.type === "text") {
+            txtPass.type = "password";
+            btnEye.className = "fa fa-eye";
+          } else {
+            txtPass.type = "text";
+            btnEye.className = "fa fa-eye-slash";
+          }
+        }
+      </script>
+
+</body>
+</html>

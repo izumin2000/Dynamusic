@@ -1,0 +1,196 @@
+/* 実装例
+<div class="tooltip1">
+    <p>テキスト</p>
+    <div class="description1">説明を入力してください。 </div>
+</div>
+<div class="tooltip5">
+    <img src="https://www.jungleocean.com/demo/tooltip-css/images/T.jpg" />
+    <div class="description5">説明を入力してください。</div>
+</div>
+ */
+
+/* tooltip1は上に表示 */
+.tooltip1{
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+.tooltip1 th{
+    margin:0;
+    padding:0;
+}
+.description1 {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 1.6em;
+    color: #fff;
+    border-radius: 5px;
+    background: #000;
+    width: 100px;
+}
+.description1:before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    border: 15px solid transparent;
+    border-top: 15px solid #000;
+    margin-left: -15px;
+}
+.tooltip1:hover .description1{
+    display: inline-block;
+    top: -70px;
+    left: -30px;
+}
+
+
+/* tooltip2は右に表示 */
+.tooltip2{
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+.tooltip2 p{
+    margin:0;
+    padding:0;
+}
+.description2 {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 1.6em;
+    color: #fff;
+    border-radius: 5px;
+    background: #000;
+    width: 100px;
+}
+.description2:before {
+    content: "";
+    position: absolute;
+    top: 0%;
+    right: 95%;
+    border: 15px solid transparent;
+    border-top: 15px solid #000;
+    margin-left: -15px;
+    transform: rotateZ(90deg);
+}
+.tooltip2:hover .description2{
+    display: inline-block;
+    top: 0px;
+    left: 80px;
+}
+
+
+/* tooltip3は下に表示 */
+.tooltip3{
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+.tooltip3 p{
+    margin:0;
+    padding:0;
+}
+.description3 {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 1.6em;
+    color: #fff;
+    border-radius: 5px;
+    background: #000;
+    width: 100px;
+}
+.description3:before {
+    content: "";
+    position: absolute;
+    top: -24px;
+    right: 60%;
+    border: 15px solid transparent;
+    border-top: 15px solid #000;
+    margin-left: -15px;
+    transform: rotateZ(180deg);
+}
+.tooltip3:hover .description3{
+    display: inline-block;
+    top: 30px;
+    left: 0px;
+}
+
+/* tooltip4は左に表示 */
+.tooltip4{
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+.tooltip4 p{
+    margin:0;
+    padding:0;
+}
+.description4 {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 1.6em;
+    color: #fff;
+    border-radius: 5px;
+    background: #000;
+    width: 100px;
+}
+.description4:before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 130px;
+    border: 15px solid transparent;
+    border-top: 15px solid #000;
+    margin-left: -15px;
+    transform: rotateZ(270deg);
+}
+.tooltip4:hover .description4{
+    display: inline-block;
+    top: 0px;
+    left: -130px;
+}
+
+
+/* tooltip5は画像に表示 */
+.tooltip5{
+    position: relative;
+    cursor: pointer;
+    display:  inline-block;
+}
+.tooltip5 img{
+    width: 20px;
+}
+.description5 {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 1.6em;
+    color: #fff;
+    border-radius: 5px;
+    background: #000;
+    width: 100px;
+}
+
+.description5:before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    border: 15px solid transparent;
+    border-top: 15px solid #000;
+    margin-left: -15px;
+}
+.tooltip5:hover .description5{
+    display: inline-block;
+    top: -75px;
+    left: -50px;
+}

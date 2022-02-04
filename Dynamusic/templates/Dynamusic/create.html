@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja" dir="ltr">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>user register</title>
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/create.css' %}"/>
+<title>Dynamusic - 新規登録</title>
+</head>
+
+<body>
+<h1 class="myh1">新規登録</h1>
+<div class="myHr"></div>
+
+{% if AccountCreate %}
+    <h1>登録完了!</h1>
+
+{% else %}
+    <div class="reg">
+    <table class="reg_form">
+
+    <form class="ui form" action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_table }}
+    <tr><td></td><td>
+    <input class="btn" type="submit" value="確認" name="next">
+    
+    </td></tr>
+    </form> 
+    </table>
+    </div>
+{% endif %}
+<p id="termsAnnounce">必ず<a href="{% url 'terms' %}" >利用規約</a>をお読みください</p>
+
+
+</body>
+</html>

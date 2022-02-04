@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load addstr %}
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">    
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    <link rel="icon" href="{% static 'img/dynamusic_icon.ico' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script type ="text/javascript" src="{% static 'js/checkChatForm.js' %}"></script>
+    <!-- <script type ="text/javascript" src="{% static 'js/updown.js' %}"></script> -->
+    <!-- <script type ="text/javascript" src="{% static 'js/sendbutton.js' %}"></script> -->
+    <title>Dynamusic - チャット</title>
+</head>
+
+<body>
+    <header class="DownMove">
+        <div id="headerLeft">
+            <a href="{% url 'index' %}"><img src="{% static 'img\dynamusic_motionlogo.gif' %}" id="logo"></a>
+            {% if user.is_authenticated %}
+                <div class="authButtons">
+                    <button id="logoutButton" type="button"><a class="headeritem" href="{% url 'logout' %}">ログアウト</a></button>
+                </div>
+                <p id="hederUsername">{{ user.username }}でログイン中</p>
+            {% else %}
+                <div class="authButtons">
+                    <button id="loginButton" type="button"><a class="headeritem" href="{% url 'login' %}">ログイン</a></button>
+                    <button id="accountcreateButton" type="button"><a class="headeritem" href="{% url 'create' %}">新規登録</a></button>
+                </div>
+            {% endif %}
+        </div>
+        <ul id="links">
+            <li><a class="headeritem" href="{% url 'index' %}">ホーム</a></li>
+            <li><a class="headeritem" href="{% url 'chat' %}">チャット</a></li>
+            <li><a class="headeritem" href="{% url 'doc' %}">使い方</a></li>
+            <li><a class="headeritem" href="{% url 'midis' %}">MIDI<i class="fas fa-download"></i></a></li>
+        </ul>
+    </header>
+
+    <main class="main">
+    <section id="up-section"></section>
+    
+    <div id="headerMargin"></div>
+    <h1 class="myh1">{{ title }}</h1>
+    <div class="myHr"></div>
+    
+    <div class="form-contents">
+        <form id="chatForm" action="{% url 'chat' %}" method="POST">
+            {% csrf_token %}
+            <label id="edit-text2">
+                <textarea id="formChatText"  name="formChatText" onkeyup="checkChatForm()"></textarea>
+                <h1><span>テキスト</span></h1>
+            </label>
+            <br />
+            <label id="edit-beats2">
+                <input type="text" id="formChatBeat" class="beats-input" name="formChatBeat" onkeyup="checkChatForm()">
+                <h1><span>ビート</span></h1>
+            </label>
+            <br />
+            <button id="submitButton">送信</button>
+            <p id="chat-error"></p>
+            
+            {% if user.is_authenticated %}
+                <p>ユーザー名は {{ user.username }}で記録されます。</p>
+            {% else %}
+                <p>ユーザー名はゲスト {{ displayedName }}で記録されます。</p>
+            {% endif %}
+        </form>
+    </div>
+
+    <div id="chatWrapper">
+        <div id="chat">
+            <hr>
+            {% for chat in chats reversed %}
+                <div id="chatInfo">
+                    {% if chat.chatuser %}
+                        <p id="chatUser">{{ chat.chatuser.username }}</p>
+                    {% else %}
+                        <p id="chatUserGuest">ゲスト {{ chat.guest }}</p>
+                    {% endif %}
+                    <p id="chatTime">{{ chat.time }}</p>
+                    {% if chat.sound.beats %}
+                        <div id="chatBeat" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ chat.sound.beats }} ビート目についてチャットしています">
+                            <a href="{% url 'tobeats' chat.sound.beats %}"><i class="fas fa-list-ol"></i>{{ chat.sound.beats }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+            <p id="chatText">{{ chat.text }}</p>
+            <hr>
+            {% endfor %}
+        </div>
+    </div>    
+</main>
+</body>
+
+</html>

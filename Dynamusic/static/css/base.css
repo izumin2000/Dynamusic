@@ -1,0 +1,462 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    /* おまじない */
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;     /*Chrome,Safari*/
+    -ms-text-size-adjust: 100%;         /*EgdeMobile*/
+    -moz-text-size-adjust: 100%;        /*firefox*/
+}
+
+.headeritem {
+    color: #000;
+    text-decoration: none;
+}
+
+header {
+    position: fixed;
+    display: flex;
+    top: 0;
+    height: 50px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 0px 9px 4px rgba(0, 0, 0, 0.1), 0 -5px 2px 2px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+@media screen and (max-width: 800px) {
+    header {
+        height: 75px;
+    }
+
+    #headerLeft {
+        margin: 0 auto;
+        height: 60px;
+        width: 100%;
+    }
+}
+
+#logo {
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 15px;
+    font-size: 22px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+@media screen and (max-width: 800px) {
+    #logo {
+        margin-top: -10px;
+        float: none;
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 555x) {
+    #logo {
+        margin: 0 0 0 10px;
+        height: 40px;
+    }
+}
+
+.authButtons {
+    float: left;
+}
+
+@media screen and (max-width: 800px) {
+    .authButtons {
+        margin-top: 10px;
+        float: none;
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 555px) {
+    .authButtons {
+        margin-top: -10px;
+        transform:scale(0.85);
+    }
+}
+
+.authButtons button {
+    cursor: pointer;
+    margin-top: 10px;
+    border: 0;
+    border-radius: 10px;
+    font-family: 'Noto Sans Japanese', sans-serif;
+    font-weight: 400;
+    background-color: #0f8eae80;
+    transition: all 0.5s;
+    padding: 4px 8px;
+}
+
+.authButtons button:hover {
+    background: #0f8eae;
+    box-shadow: 0px 6px 6px #0f8eae;
+    transition: all 0.5s;
+}
+
+.authButtons button a {
+    transition: all 0.5s;
+}
+
+.authButtons button a:hover {
+    color: #fff;
+    transition: all 0.5s;
+}
+
+#usernameButton{
+    margin-top: 6px;
+    margin-left:5px;
+    border-radius: 10px;
+
+}
+
+#accountcreateButton{
+    margin-top: 6px;
+    margin-left:5px;
+    border-radius: 10px;
+}
+
+#hederUsername {
+    float: left;
+    margin: 12px 5px 0 15px;
+    font-size: 16px;
+    color: #555;
+}
+
+@media screen and (max-width: 800px) {
+    #hederUsername {
+        float: none;
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    #hederUsername {
+        display: none;
+    }
+}
+
+#links {
+    float: right;
+    right: 10px;
+    margin: 12px 0 0 auto;
+    padding-right: 20px;
+}
+
+@media screen and (max-width: 800px) {
+    #links {
+        float: none;
+        margin: 12px 0 0 0;
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body{
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+
+#links li {
+    list-style: none;
+    display: inline-block;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+#links li > a {
+    padding: 0 10px;
+    line-height: 30px;
+    height: 30px;
+    transition: .3s;
+}
+@media screen and (max-width: 800px) {
+    #links li > a {
+        padding: 5 15px;
+    }
+}
+#links li > a:hover {
+    color: #fff;
+    background: #0F8EAE;
+    border-radius: 2px;
+    transition: .3s;
+}
+
+/*
+#links li > a[class^=trigger-] {
+    padding-right: 40px;
+}
+
+#links li ul {
+    position: absolute;
+    left: 0;
+    margin: 0;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    display: none;
+}
+
+#links li ul > li {
+    clear: both;
+    list-style: none;
+    display: block;
+    padding: 0 10px;
+    margin: 0;
+    width: 100%;
+}
+
+#links li ul > li:hover {
+    background: #9494b8;
+}
+
+#links li ul > li:hover > a {
+    background: #9494b8;
+    color: #fff;
+}*/
+
+header.UpMove{
+	animation: UpAnime 0.5s forwards;
+}
+
+@keyframes UpAnime{
+    from {
+        opacity: 1;
+	    transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+	    transform: translateY(-100px);
+    }
+}
+
+header.DownMove{
+	animation: DownAnime 0.5s forwards;
+}
+
+@keyframes DownAnime{
+    from {
+  	    opacity: 0;
+	    transform: translateY(-100px);
+    }
+    to {
+  	    opacity: 1;
+	    transform: translateY(0);
+    }
+}
+
+
+#musicTable {
+    width: 100%;
+    height:100%;
+    border-collapse: collapse;      /* 1行ごとのレイアウトができるようにするおまじない */
+    writing-mode: vertical-lr;
+    table-layout: fixed;
+    -ms-writing-mode : tb-lr;
+}
+
+#musicTable th {
+    border : 1px solid;
+    background-color: #0f8eae;
+    color: #fff;
+    text-align: center;
+    writing-mode: horizontal-tb;
+    line-height : 1;
+    height : 1em;
+}
+
+#musicTable td {
+    background: #f5f5f5;
+    text-align:center;
+    white-space: nowrap;        /*セル内の改行をしないおまじない*/
+    border : 1px solid;
+    line-height : 1;
+    height : 1em;
+    writing-mode: horizontal-tb;
+}
+
+#musicTable td > a{
+    width:auto;
+    height:auto;
+}
+
+#musicTable th > span, #musicTable td > span{
+    -ms-writing-mode : lr-tb;
+    writing-mode : horizontal-tb;
+    white-space : nowrap;
+}
+
+#musicTable i {
+    writing-mode: vertical-lr;
+}
+
+#musicTable p {
+    writing-mode: horizontal-tb;
+}
+
+.th-track i{
+    margin-left: 6px;
+}
+
+.th-tracknum {
+    margin: 6px 0 0 -6px;
+    font-size: 12px;
+    display: inline;
+}
+
+#musicTable tr:nth-child(odd) td {
+    background: #fff;
+}
+
+#td-beats, #td-play, #td-edit, #td-comment, #td-comment-linked, #td-speed, .td-track {
+    padding: 10px;
+    border-top: #777 solid 1px !important; 
+    border-right: #cccccc solid 0px !important;
+    border-bottom: #777 solid 0px !important;
+    border-left: #cccccc solid 0px !important;
+}
+
+#musicTable td > a {
+    display: block;
+}
+
+#td-beats{
+    text-align: center;
+}
+
+#td-play{
+    cursor: pointer;
+}
+
+
+#td-play a {
+    width:100%;
+    height:100%;
+    transition: .3s;
+    color: #000;
+    cursor: pointer;
+}
+
+#td-play a:hover {
+    transition: .3s;
+    color: #0f8eae;
+}
+
+#td-edit {
+    cursor: pointer;
+}
+
+#td-edit a {
+    width:100%;
+    height:100%;
+    transition: .3s;
+    color: #000;
+    cursor: pointer;
+}
+
+#td-edit a:hover {
+    transition: .3s;
+    color: #0f8eae;
+}
+
+#td-comment {
+    color: #ddd;
+}
+
+#td-comment-linked {
+    cursor: pointer;
+    color: #000;
+}
+
+#td-comment-linked a {
+    width:100%;
+    height:100%;
+}
+
+#td-comment-linked i {
+    transition: .3s;
+    color: #000;
+}
+
+#td-comment-linked i:hover {
+    color: #0f8eae;
+}
+
+#td-length {
+    display: inline;
+    font-size: 15px;
+}
+
+#td-length i {
+    font-size: 10px;
+}
+
+@import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
+.td-track {
+    font-family: 'Noto Sans Japanese', sans-serif;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.td-track:hover{
+    transition: .1s;
+    background: #FFC9D2 !important;
+}
+
+#headerMargin {
+    margin-top: 70px;
+}
+
+@media screen and (max-width: 800px) {
+    #headerMargin {
+        margin-top: 95px;
+    }
+
+    #musicTable td > a {
+        width:auto;
+        height:auto;
+    }
+}
+
+.myh1 {
+    text-align: center;
+    color: #555;
+    margin-bottom: 0;
+}
+
+.myHr {
+    background-color: #555;
+    height: 8px;
+    width: 150px;
+    margin: 0 auto 10px auto;
+}
+
+#loginAnnounce {
+    font-size: 18px;
+    margin-top: 10px;
+    text-align: center;
+}
+  
+#submitButton {
+    cursor: pointer;
+    color: #0f8eae;
+    background-color: #fff;
+    border: 2px solid #0f8eae;
+    border-radius: 5px;
+    height: 50px;
+    width: 200px;
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+
+#submitButton:hover {
+    border: 2px solid #33CC99;
+    transition: all 0.3s ease;
+}

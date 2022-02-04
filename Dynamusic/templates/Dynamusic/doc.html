@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load addstr %}
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/doc.css' %}">
+    <link rel="icon" href="{% static 'img/dynamusic_icon.ico' %}">
+    <title>Dynamusic - 使い方</title>
+
+    <!--slick-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <!---->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+
+<body>
+    <header class="DownMove">
+        <div id="headerLeft">
+            <a href="{% url 'index' %}"><img src="{% static 'img\dynamusic_motionlogo.gif' %}" id="logo"></a>
+            {% if user.is_authenticated %}
+                <div class="authButtons">
+                    <button id="logoutButton" type="button"><a class="headeritem" href="{% url 'logout' %}">ログアウト</a></button>
+                </div>
+                <p id="hederUsername">{{ user.get_username }}でログイン中</p>
+            {% else %}
+                <div class="authButtons">
+                    <button id="loginButton" type="button"><a class="headeritem" href="{% url 'login' %}">ログイン</a></button>
+                    <button id="accountcreateButton" type="button"><a class="headeritem" href="{% url 'create' %}">新規登録</a></button>
+                </div>
+            {% endif %}
+        </div>
+        <ul id="links">
+            <li><a class="headeritem" href="{% url 'index' %}">ホーム</a></li>
+            <li><a class="headeritem" href="{% url 'chat' %}">チャット</a></li>
+            <li><a class="headeritem" href="{% url 'doc' %}">使い方</a></li>
+            <li><a class="headeritem" href="{% url 'midis' %}">MIDI<i class="fas fa-download"></i></a></li>
+        </ul>
+    </header>
+
+
+    <section id="box1" class="box" data-section-name="Area1">
+        <div class="inner">
+            <h1>Dynamusicへようこそ！</h1>
+            <div class="myHrW"></div>
+            <h2>Dynamusicは大規模な音楽的コミュニティを作ることを目的とした作曲サイトです。</h2>
+            <h2>Dynamic(動的)とMusic(音楽)をテーマにしていて、</h2>
+            <h2>不特定多数の人が自由に編集することで動的に音楽が変化していくことが特徴です。</h2>
+            <h2>皆さんの力で1つの音楽を作り上げていきましょう！</h2>
+        </div>
+    </section>
+
+    <section id="box2" class="box" data-section-name="Area2">
+        <div class="inner">
+            <h1>全体の説明</h1>
+            <br>
+            <div class="pc">
+                <ul class="slider">
+                    <li><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRFRr1o-IGdHwykaaUvTapCL_3Bwuzibs21p4_LKK5-NgXV9ABbFm-dL8H7bGWIEppYzhl6tZ9yPt5k/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></li>
+                </ul>
+            </div>
+            <!--<div class="sp">
+                <ul class="slider">
+                    <li><iframe src="https://onedrive.live.com/embed?resid=901790A78EF98A35%212285&amp;authkey=%21AMbmpcXqLNgL5y8&amp;em=2&amp;wdAr=1.7777777777777777" width="1100px" height="500px" frameborder="0">これは、<a target="_blank" href="https://office.com/webapps">Office</a> の機能を利用した、<a target="_blank" href="https://office.com">Microsoft Office</a> の埋め込み型のプレゼンテーションです。</iframe></li>
+                </ul>
+            </div>-->
+        </div>
+    </section>
+
+    <section id="box3" class="box" data-section-name="Area3">
+        <div class="inner">
+            <h1>ホーム画面</h1>
+            <br>
+            <div class="pc">
+                <ul class="slider">
+                    <li><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRZ2zZtL3G7e-VAzrQJO7Z7MZwKzVlz8y4BvQ1gQ5vht28KTckDur4LksiMaMskJMbdGzXCtifs__hE/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></li>
+                </ul>
+            </div>
+            <!--<div class="sp">
+                <ul class="slider">
+                    <li><img src="{% static 'img/sumaho.png' %}" alt=""></li>
+                </ul>
+            </div>-->
+        </div>
+    </section>
+
+    <section id="box4" class="box" data-section-name="Area4">
+        <div class="inner">
+            <h1>編集画面</h1>
+            <br>
+            <div class="pc">
+                <ul class="slider">
+                    <li><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQi6Bbax9OQo63hdFBemZyXtQCuUxGSXuPD6lZOH4zXmkGyPH1cR__XBePtCGJ89kak4InX7jpPqKeg/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></li>
+                </ul>
+            </div>
+            <!--<div class="sp">
+                <ul class="slider">
+                    <li><img src="{% static 'img/sumaho.png' %}" alt=""></li>
+                </ul>
+            </div>-->
+        </div>
+    </section>
+
+    <section id="box5" class="box" data-section-name="Area5">
+        <div class="inner">
+            <h1>チャット画面</h1>
+            <br>
+            <div class="pc">
+                <ul class="slider">
+                    <li><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vS93b2CVutVL6b4YuhJJTEL4bsQ5rwtMLtw_iKVtsjD6XjaZLYjz5CbAC2WEXmXOExAfIrIrzxVdr8z/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></li>
+                </ul>
+            </div>
+            <!--<div class="sp">
+                <ul class="slider">
+                    <li><img src="{% static 'img/sumaho.png' %}" alt=""></li>
+                </ul>
+            </div>-->
+        </div>
+    </section>
+
+    <section id="box6" class="box" data-section-name="Area6">
+        <div class="inner">
+            <h1>MIDIアーカイブ</h1>
+            <br>
+            <div class="pc">
+                <ul class="slider">
+                    <li><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRXY87Dhh6Z_185Asn4huRMp9qVn3LKWDKMWXGP2DHAxPopvcq4Atin3bVSk1HQShqvwdBzQcZrssx8/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></li>
+                </ul>
+            </div>
+            <!--<div class="sp">
+                <ul class="slider">
+                    <li><img src="{% static 'img/sumaho.png' %}" alt=""></li>
+                </ul>
+            </div>-->
+        </div>
+    </section>
+
+    <section id="box7" class="box" data-section-name="Area7">
+        <div class="inner">
+            <h1>その他</h1>
+            <br>
+            <div class="pc">
+                <ul class="slider">
+                    <li><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vR4p4SO10z4PSXCVO6NY5r4Qw4iEqVyJbgXQVK93F9467Ef9nCB8LV8CYgpp02nx17P3ftyxluMCUNT/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></li>
+                </ul>
+            </div>
+            <!--<div class="sp">
+                <ul class="slider">
+                    <li><img src="{% static 'img/sumaho.png' %}" alt=""></li>
+                </ul>
+            </div>-->
+        </div>
+    </section>
+
+    <!--jQuery--><script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!--slick.js-->
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="{% static 'js/slick.js' %}"></script>
+    <!---->
+    <!--scrollify.js
+    <script src="https://cdn.jsdelivr.net/npm/jquery-scrollify@1/jquery.scrollify.min.js"></script>
+    <script src="{% static 'js/scroll.js' %}"></script>-->
+    <!---->
+</body>
+</html>

@@ -1,0 +1,25 @@
+#midisList {
+    margin-top: 40px;
+}
+
+.midisName {
+    font-family: 'Noto Sans Japanese', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 10px;
+}
+
+.midisName a {
+    text-decoration: none;
+}
+
+.midisName a i, .midisName i {
+    margin: 5px;
+    color: #000;
+    transition: 0.5s;
+}
+
+.midisName a i:hover, .midisName i:hover {
+    color: #0f8eae;
+    transition: 0.5s;
+}

@@ -1,0 +1,1 @@
+print("qw".replace("a", ""))

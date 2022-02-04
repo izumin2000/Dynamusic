@@ -1,0 +1,255 @@
+@media screen and (min-width: 910px) {
+    body {
+        overflow-y: hidden;
+    }
+}
+
+h1 {
+    background-color:#0F8EAE;
+    text-align:center;
+    width: 100%;
+}
+
+@media screen and (min-width: 910px) {
+    #Wrapper{
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 910px) {
+    #Wrapper{
+        display: block;
+    }
+}
+
+#soundEditorWrapper {
+    width: 50vw;
+    margin-top: 1vh;
+    margin-left: 1vw;
+}
+
+@media screen and (max-width: 910px) {
+    #soundEditorWrapper {
+        width: 96vw;
+    }
+}
+
+#soundEditorWrapper input:focus {
+    border: 1px solid #0F8EAE;
+    outline: none;
+    box-shadow: 0 0 5px 1px #0F8EAE;
+}
+
+#soundEditor {
+    width: 50vw;
+    margin: 8vh 0 0 0;
+    border-radius: 25px;
+    border: solid 1px black;
+    background-color:rgb(236, 235, 235);
+    padding: 10px 20px;
+    text-align: center;
+}
+
+@media screen and (max-width: 910px) {
+    #soundEditor {
+        width: 96vw;
+        margin: 0;
+    }
+}
+
+#soundEditor h2{
+    margin-bottom: 2.5vh;
+}
+
+#soundEditor #edit-track{
+    margin-left: 0.5vw;
+}
+
+#soundEditor #edit-rows{
+    margin-right: 6vw;
+}
+
+#input-speed, #input-track, #input-note, #input-rows{
+    border-radius: 10px;
+    border: solid 1px black;
+    width: 300px;
+    padding: 10px 20px
+}
+
+@media screen and (min-width: 910px) {
+    #edit-note{
+        margin-left: 25px;
+    }
+}
+
+@media screen and (max-width: 910px) {
+    #edit-note{
+        margin-left: -5px;
+    }
+}
+
+#edit-rows{
+    margin-left: calc(-10px + 10%);
+}
+
+
+#edit-length {
+    margin:0 0 10px -90px;
+}
+
+#edit-length input{
+    margin-left: 5px;
+}
+
+#speed-error, #track-error, #note-error, #rows-error, #sound-error {
+    color: #FF0000;
+}
+
+#HowtoInputNote {
+    display: inline-block;
+    margin-left: 5px;
+    color: #000;
+    transition: 0.5s;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+#HowtoInputNote:hover {
+    color: #0F8EAE;
+    transition: 0.5s;
+}
+
+#td-rows{
+    margin-bottom: -3px;
+}
+
+#musicTable {
+    height:91%;
+    margin-top: 2%;
+}
+
+@media screen and (min-width: 910px) {
+    #soundEditorexplain {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 910px) {
+    #soundEditorexplain {
+        border-radius: 25px;
+        border: solid 1px black;
+        background-color: #2F96B455;
+        width: 96%;
+        margin: 2vh 2%;
+        padding: 18px 20px;
+    }
+
+    #soundEditorexplain h3 {
+        text-align: center;
+    }
+
+    #soundEditorexplain p {
+        margin-left: 10px;
+    }
+
+    #HowtoInputNote {
+        display: none;
+    }
+}
+
+#table-wrapper {
+    flex-grow: 1;
+    /* もともとのマージン 
+    margin: 10px 2.5%; */
+    /* 個人的マージン */
+    margin: 2vmin;
+}
+
+@media screen and (max-width: 910px) {
+    #table-wrapper {
+        flex-grow: 0;
+        margin: 10px 2.5%;
+    }
+}
+
+#sound-submit {
+    background: #108eae;
+    width: 200px;
+    height: 40px;
+    line-height: 42px;
+    padding: 0;
+    border: none;
+}
+
+/*
+.sound-submit span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.sound-submit:before,
+.sound-submit:after {
+    position: absolute;
+    content: "";
+    right: 0;
+    top: 0;
+     background: #edbbc3;
+    transition: all 0.3s ease;
+}
+
+.sound-submit:before {
+    height: 0%;
+    width: 2px;
+}
+
+.sound-submit:after {
+    width: 0%;
+    height: 2px;
+}
+
+.sound-submit:hover{
+     background: transparent;
+    box-shadow: none;
+}
+
+.sound-submit:hover:before {
+    height: 100%;
+}
+
+.sound-submit:hover:after {
+    width: 100%;
+}
+
+.sound-submit span:hover{
+     color: #edbbc3;
+}
+
+.sound-submit span:before,  
+.sound-submit span:after {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: 0;
+     background: #edbbc3;
+    transition: all 0.3s ease;
+}
+
+.sound-submit span:before {
+    width: 2px;
+    height: 0%;
+}
+
+.sound-submit span:after {
+    width: 0%;
+    height: 2px;
+}
+
+.sound-submit span:hover:before {
+    height: 100%;
+}
+
+.sound-submit span:hover:after {
+    width: 100%;
+}*/

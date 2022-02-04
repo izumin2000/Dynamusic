@@ -1,0 +1,34 @@
+div.reg{
+    background-color: #EEEEEE;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+  
+table.reg_form{
+    width: 100%;
+    border-spacing: 10px 30px;
+    padding-left:20px;
+}
+
+/* 入力項目が正しいかの判断、カーソルを載せている時の表示色 */
+input:required{
+    background: #ffcdd2;
+}
+
+input[type="email"]:invalid{
+    background: #ffcdd2;
+}
+
+input:valid{
+    background: transparent;
+}
+
+input:focus{
+    background: #DCEDC8;
+}
+
+#termsAnnounce {
+    font-size: 18px;
+    margin-top: 10px;
+    text-align: center;
+}

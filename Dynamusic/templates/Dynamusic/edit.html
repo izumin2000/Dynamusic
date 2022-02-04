@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+{% load addstr %}
+{% load static %}
+
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">    
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit.css' %}">
+    <link rel="icon" href="{% static 'img/dynamusic_icon.ico' %}">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" /> <!-- toastrに必要なファイルの読み込み -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script type ="text/javascript" src="{% static 'js/updown.js' %}"></script>
+    <script type ="text/javascript" src="{% static 'js/colorchange.js' %}"></script>
+    <script type ="text/javascript" src="{% static 'js/checkSoundForm.js' %}"></script>
+    <script type="text/javascript" src="https://www.midijs.net/lib/midi.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> <!-- jqueryの読み込み -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" /> <!-- toastrに必要なファイルの読み込み -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> <!-- toastrに必要なファイルの読み込み -->
+    <!-- インフォメーションポップアップに必要なjsの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script>$('[data-toggle="tooltip"]').tooltip()</script>
+    <script>$('[data-toggle="popover"]').popover()</script>
+    <title>Dynamusic - beat {{ editedSound.beats }}</title>
+</head>
+
+<body>
+    <header class="DownMove">
+        <div id="headerLeft">
+            <a href="{% url 'index' %}"><img src="{% static 'img\dynamusic_motionlogo.gif' %}" id="logo"></a>
+            {% if user.is_authenticated %}
+                <div class="authButtons">
+                    <button id="logoutButton" type="button"><a class="headeritem" href="{% url 'logout' %}">ログアウト</a></button>
+                </div>
+                <p id="hederUsername">{{ user.get_username }}でログイン中</p>
+            {% else %}
+                <div class="authButtons">
+                    <button id="loginButton" type="button"><a class="headeritem" href="{% url 'login' %}">ログイン</a></button>
+                    <button id="accountcreateButton" type="button"><a class="headeritem" href="{% url 'create' %}">新規登録</a></button>
+                </div>
+            {% endif %}
+        </div>
+        <ul id="links">
+            <li><a class="headeritem" href="{% url 'index' %}">ホーム</a></li>
+            <li><a class="headeritem" href="{% url 'chat' %}">チャット</a></li>
+            <li><a class="headeritem" href="{% url 'doc' %}">使い方</a></li>
+            <li><a class="headeritem" href="{% url 'midis' %}">MIDI<i class="fas fa-download"></i></a></li>
+        </ul>
+    </header>
+
+    <div id="headerMargin"></div>
+    <!-- WrapperがsoundEditorWrapperとtable-wrapperを覆う -->
+    <div id="Wrapper">
+        <!-- soundEditorWrapperから左右分割する必要がある(左) -->
+        <div id="soundEditorWrapper">
+            <form id="soundEditor" action="{% url 'edit' editedSound.beats %}" method="POST">
+            <h2>ビート {{ editedSound.beats }}</h2>
+                {% csrf_token %}
+                <label id="edit-track" data-bs-toggle="tooltip" data-bs-placement="top" title="トラック(登録したい列)を選択します。何も入力しない場合、音の高さが入力されているときは自動的にトラック1が選択され、音の高さが入力されていない場合は音の変更は行われません。">
+                    トラック <input id="input-track" name="input-track" onkeyup="checkSoundForm()">
+                    <p id="track-error"></p>
+                </label>
+                <br />
+
+                <label id="edit-note" data-bs-toggle="tooltip" data-bs-placement="right" title="音の高さ(音階)を変更します。音階はドレミ表記・ドイツ式表記に対応していて何も入力しない場合、音を削除します。">
+                    音の高さ <input id="input-note" name="input-note" onkeyup="checkSoundForm()">
+                    <p id="note-error"></p>
+                </label>
+                <i class="fas fa-question-circle" id="HowtoInputNote" onclick="HowtoInputNote()" data-bs-toggle="tooltip" data-bs-placement="top" title="クリックでさらに詳しい情報を表示"></i>
+                <br />
+
+                <label id="edit-length" data-bs-toggle="tooltip" data-bs-placement="right" title="音の長さ(音価)を変更します。何も選択しない場合、1になります。">
+                    音の長さ   
+                    <input type="radio" class="input-length" id="length0" value="0" name="input-length" onkeyup="checkSoundForm()" data-bs-toggle="tooltip" data-bs-placement="top" title="音の長さを1/4倍にします。16分音符を表せます。"><label for="length0" data-bs-toggle="tooltip" data-bs-placement="top" title="音の長さを1/4倍にします。16分音符を表せます。">0.25</label>
+                    <input type="radio" class="input-length" id="length1" value="1" name="input-length" onkeyup="checkSoundForm()" data-bs-toggle="tooltip" data-bs-placement="top" title="音の長さを1/2倍にします。8分音符を表せます。"><label for="length1" data-bs-toggle="tooltip" data-bs-placement="top" title="音の長さを1/2倍にします。8分音符を表せます。">0.5</label>
+                    <input type="radio" class="input-length" id="length2" value="2" name="input-length" onkeyup="checkSoundForm()" data-bs-toggle="tooltip" data-bs-placement="top" title="音の長さを1倍にします。4分音符を表せます。"><label for="length2" data-bs-toggle="tooltip" data-bs-placement="top" title="音の長さを1倍にします。4分音符を表せます。">1.0</label>
+                    <input type="radio" class="input-length" id="length3" value="3" name="input-length" onkeyup="checkSoundForm()" data-bs-toggle="tooltip" data-bs-placement="top" title="音の長さを2倍にします。2分音符を表せます。"><label for="length3" data-bs-toggle="tooltip" data-bs-placement="top" title="音の長さを2倍にします。2分音符を表せます。">2.0</label>
+                    <input type="radio" class="input-length" id="length4" value="4" name="input-length" onkeyup="checkSoundForm()" data-bs-toggle="tooltip" data-bs-placement="top" title="音の長さを4倍にします。全音符を表せます。"><label for="length4" data-bs-toggle="tooltip" data-bs-placement="top" title="音の長さを4倍にします。全音符を表せます。">4.0</label>
+                </label>
+                <br />
+
+                <label id="edit-rows" data-bs-toggle="tooltip" data-bs-placement="top" title="一度に音の高さを変更する行数を変更します。何も入力しない場合、自動的に1行変更されます。"> 
+                    編集する行数 <input placeholder="1" id="input-rows" name="input-rows" onkeyup="checkSoundForm()">
+                    <p id="rows-error"></p>
+                </label>
+                <br />
+
+                <label id="edit-speed"  data-bs-toggle="tooltip" data-bs-placement="right" title="曲の速さ(テンポ)を変更します。60で1秒間隔でスクロールし、数字を大きくすると速くなります。何も入力しない場合、変更されません。">
+                    曲の速さ <input  placeholder="{{ editedSound.speed }}" id="input-speed" name="input-speed" onkeyup="checkSoundForm()">
+                    <p id="speed-error"></p>
+                </label>
+                <br />
+                <br />
+                <br />
+                
+                <button id="submitButton">送信</button>
+                <p id="sound-error"></p>
+            </form>
+        </div>
+
+        <!-- table-wrapperから左右分割する必要がある(右) -->
+        <div id="table-wrapper">
+            <table id="musicTable" onmouseleave="previwtrack(1)">
+                <section id="up-section">
+                    <tr id = "0">
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="ビート" ><i class="fas fa-list-ol"></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="ここから再生"><i class="fas fa-play-circle"></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="編集"><i class="fas fa-pen"></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="コメント"><i class="fas fa-comment-dots"></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="速さ"><i class="fas fa-tachometer-alt"></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック1" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">1</p></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック2" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">2</p></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック3" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">3</p></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック4" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">4</p></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック5" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">5</p></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック6" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">6</p></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック7" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">7</p></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック8" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">8</p></i></th>
+                        <th data-bs-toggle="tooltip" data-bs-placement="top" title="トラック9" class="th-track"><i class="fab fa-itunes-note"><p class="th-tracknum">9</p></i></th>
+                    </tr>
+                    {% for sound in sounds %}
+                    <tr id = "{{ sound.beats }}">
+                        <td id="td-beats">{{ sound.beats }}</td>
+                        <td id="td-play" data-bs-toggle="tooltip" data-bs-placement="top" title="ここから再生"><a href="{% url 'autoplay' sound.beats %}"><i class="fas fa-play-circle"></i></a></td>
+                        <td id="td-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="編集"><a href="{% url 'edit' sound.beats %}"><i class="fas fa-pen"></i></a></td>
+                        {% if sound.comment  %}
+                        <td id="td-comment-linked" data-bs-toggle="tooltip" data-bs-placement="top" title="ビート{{ sound.beats }}について話しているチャットを表示"><a href="{% url 'chatbeats' sound.beats %}"><i class="fas fa-comment-dots"></i></a></td>
+                        {% else %}
+                        <td id="td-comment" data-bs-toggle="tooltip" data-bs-placement="top" title="ビート{{ sound.beats }}について話しているチャットはありません"><i class="fas fa-comment-dots"></i></td>
+                        {% endif %}
+                        <td id="td-speed">{{ sound.speed }}<br /><p id="td-rows"><i class="fas fa-times cross"></i>{{ sound.length }}</p> </td>
+                        <td class="td-track" onmouseenter="onmouseplay('{{ sound.track1 }}')" onmouseover="previwtrack(1)" onclick="inputtrack(1)" data-bs-toggle="tooltip" data-bs-placement="top" title="クリックするとトラックに1が入力されます">{{ sound.track1 }}</td>
+                        <td class="td-track" onmouseenter="onmouseplay('{{ sound.track2 }}')" onmouseover="previwtrack(2)" onclick="inputtrack(2)" data-bs-toggle="tooltip" data-bs-placement="top" title="クリックするとトラックに2が入力されます">{{ sound.track2 }}</td>
+                        <td class="td-track" onmouseenter="onmouseplay('{{ sound.track3 }}')" onmouseover="previwtrack(3)" onclick="inputtrack(3)" data-bs-toggle="tooltip" data-bs-placement="top" title="クリックするとトラックに3が入力されます">{{ sound.track3 }}</td>
+                        <td class="td-track" onmouseenter="onmouseplay('{{ sound.track4 }}')" onmouseover="previwtrack(4)" onclick="inputtrack(4)" data-bs-toggle="tooltip" data-bs-placement="top" title="クリックするとトラックに4が入力されます">{{ sound.track4 }}</td>
+                        <td class="td-track" onmouseenter="onmouseplay('{{ sound.track5 }}')" onmouseover="previwtrack(5)" onclick="inputtrack(5)" data-bs-toggle="tooltip" data-bs-placement="top" title="クリックするとトラックに5が入力されます">{{ sound.track5 }}</td>
+                        <td class="td-track" onmouseenter="onmouseplay('{{ sound.track6 }}')" onmouseover="previwtrack(6)" onclick="inputtrack(6)" data-bs-toggle="tooltip" data-bs-placement="top" title="クリックするとトラックに6が入力されます">{{ sound.track6 }}</td>
+                        <td class="td-track" onmouseenter="onmouseplay('{{ sound.track7 }}')" onmouseover="previwtrack(7)" onclick="inputtrack(7)" data-bs-toggle="tooltip" data-bs-placement="top" title="クリックするとトラックに7が入力されます">{{ sound.track7 }}</td>
+                        <td class="td-track" onmouseenter="onmouseplay('{{ sound.track8 }}')" onmouseover="previwtrack(8)" onclick="inputtrack(8)" data-bs-toggle="tooltip" data-bs-placement="top" title="クリックするとトラックに8が入力されます">{{ sound.track8 }}</td>
+                        <td class="td-track" onmouseenter="onmouseplay('{{ sound.track9 }}')" onmouseover="previwtrack(9)" onclick="inputtrack(9)" data-bs-toggle="tooltip" data-bs-placement="top" title="クリックするとトラックに9が入力されます">{{ sound.track9 }}</td>
+                    </tr>
+                    {% endfor %}
+                </section>
+            </table>
+        </div>
+    </div>
+
+    <div id="soundEditorexplain">
+        <h3>音の高さの入力方法</h3>
+        <p>音階は日本語表記(ドレミファソラシド)、と英語表記(CDEFGAB)のうち1つ入力します。表には日本語が入力されます。</p>
+        <p>シャープは#（ハッシュマーク）、フラッシュはb(英語のb)で表現します。</p>
+        <p>音階の後ろに半角数字をつけることでオクターブを表すことができます。何も指定しない場合は標準である4が自動で挿入されます。</p>
+        <p>音階の前に/(スラッシュ)を入力することで音を区切ることができます。</p>
+        <p>音階以外の文字も入力されますが、表には「」(カギカッコ)が自動で挿入され、その文字は無視されます。</p>
+        <p>何も入力しないと音が削除されます。</p>
+    </div>
+</body>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script>
+    // toastrの実装
+    function HowtoInputNote(){
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "timeOut": "100000000",
+            "extendedTimeOut": "0",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+        }
+
+        toastr.info("音の高さの入力方法：音階は日本語表記(ドレミファソラシド)、と英語表記(CDEFGAB)のうち1つ入力します。表には日本語が入力されます。")
+        toastr.info("シャープは#（ハッシュマーク）、フラッシュはb(英語のb)で表現します。")
+        toastr.info("音階の後ろに半角数字をつけることでオクターブを表すことができます。何も指定しない場合は標準である4が自動で挿入されます。")
+        toastr.info("音階の前に/(スラッシュ)を入力することで音を区切ることができます。")
+        toastr.info("音階以外の文字も入力されますが、表には「」(カギカッコ)が自動で挿入され、その文字は無視されます。")
+        toastr.info("何も入力しないと音が削除されます。")
+
+    };
+</script>
+
+<script>
+    window.addEventListener('load',function(){
+        var musicTableId = document.getElementById('musicTable');
+        if ('{{ editedSound.beats }}' < 3) {
+            var cellId = musicTableId.rows[Number('{{ editedSound.beats }}')].cells[0];
+        } else if ('{{ editedSound.beats }}' < 1023) {
+            var cellId = musicTableId.rows[3].cells[0];
+        } else if ('{{ editedSound.beats }}' == 1023) {
+            var cellId = musicTableId.rows[4].cells[0];
+        } else if ('{{ editedSound.beats }}' == 1024) {
+            var cellId = musicTableId.rows[5].cells[0];
+        }
+        cellId.style.backgroundColor = '#FFC9D2';
+    });
+
+    function previwtrack(track){
+        var inputTrackId = document.getElementById('input-track');
+        if (inputTrackId != null) {
+            inputTrackId.placeholder = track;
+        }
+    }
+
+    function inputtrack(track){
+        var inputTrackId = document.getElementById('input-track');
+        if (inputTrackId != null) {
+            inputTrackId.value = track;
+        }
+    }
+</script>
+
+<script type ="text/javascript" src="{% static 'js/music.js' %}"></script>
+</html>
